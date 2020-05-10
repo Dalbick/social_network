@@ -3,6 +3,7 @@ from base64 import b64encode
 from flask_login import LoginManager, login_user, logout_user, login_required, current_user
 from sqlalchemy import func
 from flask_restful import Api
+from os import environ
 from data.db_session import global_init, create_session
 from data.users import User
 from data.posts import Post
@@ -32,7 +33,8 @@ def main():
     api.add_resource(PostsResource, '/api/posts/<int:post_id>')
     api.add_resource(CommentsListResource, '/api/comments')
     api.add_resource(CommentsResource, '/api/comments/<int:comment_id>')
-    app.run()
+    port = int(environ.get("PORT", 5000))
+    app.run(host='0.0.0.0', port=port)
 
 
 @app.route('/')
