@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="post">
+    <a href="/user/{{post.user_id}}"><img src="data:image/png;base64,{{post.user.picture}}" alt="Ошибка загрузки"
+                                          class="user-picture"></a> <a href="/user/{{post.user_id}}"
+                                                                       class="user-nickname">{{post.user.nickname}}</a>
+    <div class="date">{{post.created_date.strftime("%d %B, %Y")}}</div>
+    <br>
+    <img src="data:image/png;base64,{{post.picture}}" alt="Ошибка загрузки" class="post-picture">
+    <p class="text">{{post.description}}</p>
+    {% if current_user.is_authenticated and current_user == post.user%}
+    <div>
+        <a href="/edit_post/{{ post.id }}" class="btn btn-warning edit-or-delete-button">Edit post</a>
+        <a href="/delete_post/{{ post.id }}" class="btn btn-danger edit-or-delete-button">Delete post</a>
+    </div>
+    {% endif %}
+    {% if current_user.is_authenticated %}
+    <a href="/add_comment/{{ post.id }}" class="btn btn-primary edit-or-delete-button">Add comment</a>
+    {% endif %}
+    {% if post.comments %}
+    <hr class="post-line">
+    {% endif %}
+    {% for comment in post.comments %}
+    <div class="comment">
+        <a href="/user/{{comment.user_id}}"><img src="data:image/png;base64,{{comment.user.picture}}"
+                                                 alt="Ошибка загрузки" class="user-picture"></a> <a
+            href="/user/{{comment.user_id}}" class="user-nickname">{{comment.user.nickname}}</a>
+        <div class="date">{{comment.created_date.strftime("%d %B, %Y")}}</div>
+        <br>
+        <p class="text">{{comment.text}}</p>
+        {% if comment.user_id == current_user.id %}
+        <a href="/edit_comment/{{ comment.id }}" class="btn btn-warning edit-or-delete-button">Edit comment</a>
+        <a href="/delete_comment/{{ comment.id }}" class="btn btn-danger edit-or-delete-button">Delete comment</a>
+        {% endif %}
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

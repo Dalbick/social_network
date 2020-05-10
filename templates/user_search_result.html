@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block content %}
+{% for user in users %}
+<div class="user">
+    <a href="/user/{{user.id}}"><img src="data:image/png;base64,{{user.picture}}" alt="Ошибка загрузки"
+                                     class="user-picture"></a> <a href="/user/{{user.id}}" class="user-nickname">{{user.nickname}}</a>{%
+    if user.to_show_private_information or user == current_user %}
+    <div class="date">{{user.surname|capitalize}} {{user.name|capitalize}}, {{user.age}} y.o.,
+        {{user.created_date.strftime("%d %B, %Y")}}
+    </div>
+    {% endif %}
+</div><br>
+{% endfor %}
+{% endblock %}
